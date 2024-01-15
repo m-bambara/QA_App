@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val title = map["title"] as? String ?: ""
             val body = map["body"] as? String ?: ""
             val name = map["name"] as? String ?: ""
+            val favorite = map["favorite"] as? String ?: "" //favorite追加 booleanではなく、Stringの書き替えで処理
             val uid = map["uid"] as? String ?: ""
             val imageString = map["image"] as? String ?: ""
             val bytes =
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             val question = Question(
                 title, body, name, uid, dataSnapshot.key ?: "",
-                genre, bytes, answerArrayList
+                genre, favorite, bytes, answerArrayList
             )
             questionArrayList.add(question)
             adapter.notifyDataSetChanged()

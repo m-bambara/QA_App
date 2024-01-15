@@ -160,6 +160,9 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener,
             data["body"] = body
             data["name"] = name!!
 
+            // ここでお気に入り状態を追加
+            data["favorite"] = "false" //初期値はFalse
+
             // 添付画像を取得する
             val drawable = binding.imageView.drawable as? BitmapDrawable
 

@@ -1,5 +1,6 @@
 package jp.techacademy.motoyoshi.qa_app
 
+import android.R
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,6 +11,7 @@ import android.widget.BaseAdapter
 import com.google.firebase.auth.FirebaseAuth
 import jp.techacademy.motoyoshi.qa_app.databinding.ListAnswerBinding
 import jp.techacademy.motoyoshi.qa_app.databinding.ListQuestionDetailBinding
+
 
 class QuestionDetailListAdapter(context: Context, private val question: Question) : BaseAdapter() {
     companion object {
@@ -70,6 +72,15 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
             }else{
                 binding.favoriteImageView.visibility= View.VISIBLE
             }
+
+            if (question.favorite == "false"){
+                //画像表示
+                binding.favoriteImageView.setImageResource(R.drawable.ic_star_border)
+            }else{
+                //画像表示
+                binding.favoriteImageView.setImageResource(R.drawable.ic_star)
+            }
+            //画像表示の切りかえがうまく行かない
 
             val bytes = question.imageBytes
             if (bytes.isNotEmpty()) {
