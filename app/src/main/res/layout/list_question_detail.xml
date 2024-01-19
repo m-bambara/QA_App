@@ -34,14 +34,14 @@
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <ImageView
-        android:id="@+id/favoriteImageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_star_border"
-        app:tint="@color/orange_200"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        tools:ignore="ContentDescription,ImageContrastCheck" />
+<!--    <ImageView-->
+<!--        android:id="@+id/favoriteImageView"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:src="@drawable/ic_star_border"-->
+<!--        app:tint="@color/orange_200"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        tools:ignore="ContentDescription,ImageContrastCheck" />-->
 
 </RelativeLayout>

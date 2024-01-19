@@ -62,25 +62,7 @@ class QuestionDetailListAdapter(context: Context, private val question: Question
             binding.bodyTextView.text = question.body
             binding.nameTextView.text = question.name
 
-            //ログインしているか
-            // ログイン済みのユーザーを取得する
-            val user = FirebaseAuth.getInstance().currentUser
-            // ログインしていなければ★を非表示にする
-            if (user == null) {
-                //星を非表示にする
-                binding.favoriteImageView.visibility= View.INVISIBLE
-            }else{
-                binding.favoriteImageView.visibility= View.VISIBLE
-            }
 
-            if (question.favorite == "false"){
-                //画像表示
-                binding.favoriteImageView.setImageResource(R.drawable.ic_star_border)
-            }else{
-                //画像表示
-                binding.favoriteImageView.setImageResource(R.drawable.ic_star)
-            }
-            //画像表示の切りかえがうまく行かない
 
             val bytes = question.imageBytes
             if (bytes.isNotEmpty()) {

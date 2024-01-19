@@ -10,7 +10,7 @@ class Question(
     val uid: String,
     val questionUid: String,
     val genre: Int,
-    val favorite: String,
+    var favorite: String,
     bytes: ByteArray,
     val answers: ArrayList<Answer>
 ) : Serializable {
