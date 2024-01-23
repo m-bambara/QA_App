@@ -91,57 +91,59 @@ class QuestionDetailActivity : AppCompatActivity() {
         //ログインしているか
         // ログイン済みのユーザーを取得する
         val user = FirebaseAuth.getInstance().currentUser
+
         // ログインしていなければ★を非表示にする
         if (user == null) {
             //星を非表示にする
             binding.favoriteImageView.visibility = View.INVISIBLE
         } else {
             binding.favoriteImageView.visibility = View.VISIBLE
-        }
 
-        if (question.favorite == "true") {
-            //画像表示
-            binding.favoriteImageView.setImageResource(R.drawable.ic_star)
-        } else {
-            //画像表示
-            binding.favoriteImageView.setImageResource(R.drawable.ic_star_border)
-        }
+            val favoriteRef = databaseReference.child("favorites").child(user.uid).child(question.questionUid)
+            // 現在のお気に入り状態をチェックし、星の画像を設定
+            setFavoriteImage(favoriteRef)
 
-        binding.favoriteImageView.setOnClickListener {
-            val user = FirebaseAuth.getInstance().currentUser
-            if (user != null) {
-                val questionUid = question.questionUid
-                val userUid = user.uid
-
-
-                // "favorites"ノードに質問のUIDをキーとして、お気に入り状態を保存
-                val favoriteRef = databaseReference.child("favorites").child(userUid).child(questionUid)
-
-
+            // 星の画像をクリックしたときの処理
+            binding.favoriteImageView.setOnClickListener {
                 favoriteRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val isFavorite = dataSnapshot.getValue(String::class.java)
-                        val newFavoriteStatus = if (isFavorite == null || isFavorite == "false") "true" else "false"
-
-                        favoriteRef.setValue(newFavoriteStatus)
-                        val imageResource = if (newFavoriteStatus == "true") R.drawable.ic_star else R.drawable.ic_star_border
-                        binding.favoriteImageView.setImageResource(imageResource)
-
-                        // お気に入り状態が更新されたことをローカルのquestionオブジェクトに反映
-                        question.favorite = newFavoriteStatus
-                        adapter.notifyDataSetChanged()
+                        if (dataSnapshot.exists()) {
+                            // 既にお気に入りなら削除
+                            favoriteRef.removeValue()
+                        } else {
+                            // お気に入りでなければ追加
+                            favoriteRef.setValue(question.genre.toString())
+                        }
+                        setFavoriteImage(favoriteRef)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
                         Log.w("QuestionDetailActivity", "Failed to read favorite", databaseError.toException())
                     }
                 })
-           }
-
-            val dataBaseReference = FirebaseDatabase.getInstance().reference
-            answerRef = dataBaseReference.child(ContentsPATH).child(question.genre.toString())
-                .child(question.questionUid).child(AnswersPATH)
-            answerRef.addChildEventListener(eventListener)
+            }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    private fun setFavoriteImage(favoriteRef: DatabaseReference) {
+        favoriteRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    binding.favoriteImageView.setImageResource(R.drawable.ic_star)
+                } else {
+                    binding.favoriteImageView.setImageResource(R.drawable.ic_star_border)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("QuestionDetailActivity", "Failed to read favorite", databaseError.toException())
+            }
+        })
+    }
+
 }
